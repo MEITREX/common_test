@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.gits.util;
+package de.unistuttgart.iste.gits.common.util;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -10,6 +10,7 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class ClearDatabase implements AfterEachCallback, BeforeAllCallback {
     private List<String> tables;
 
     @Override
-    public void beforeAll(ExtensionContext context) {
+    public void beforeAll(ExtensionContext context) throws Exception {
         dataSource = SpringExtension.getApplicationContext(context).getBean("dataSource", DataSource.class);
         tables = getTableNames(dataSource);
     }
@@ -47,18 +48,15 @@ public class ClearDatabase implements AfterEachCallback, BeforeAllCallback {
      * @param dataSource the datasource
      * @return a list of table names
      */
-    private List<String> getTableNames(DataSource dataSource) {
+    private List<String> getTableNames(DataSource dataSource) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             List<String> result = new ArrayList<>();
-            ResultSet tables = connection.getMetaData().getTables(null, null, "%", new String[]{"TABLE"});
-            while (tables.next()) {
-                result.add(tables.getString("TABLE_NAME"));
+            ResultSet resultTables = connection.getMetaData().getTables(null, null, "%", new String[]{"TABLE"});
+            while (resultTables.next()) {
+                result.add(resultTables.getString("TABLE_NAME"));
             }
             return result;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
-
     }
 
 }

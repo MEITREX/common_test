@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.gits.util;
+package de.unistuttgart.iste.gits.common.util;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;

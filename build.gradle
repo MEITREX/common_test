@@ -31,8 +31,9 @@ graphqlCodegen {
 	generateToString = true
 }
 
-// Automatically generate GraphQL code on project build:
-compileJava.dependsOn 'graphqlCodegen'
+// Don't automatically generate GraphQL code on project build, as this utility repo does not contain a GraphQL schema
+// uncomment the following line to enable automatic code generation if schema files are added later
+// compileJava.dependsOn 'graphqlCodegen'
 
 // Add generated sources to your project source sets:
 sourceSets.main.java.srcDir "$buildDir/generated"
@@ -50,21 +51,11 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.modelmapper:modelmapper:3.+'
-	implementation 'com.graphql-java:graphql-java-extended-scalars:20.0'
-	implementation 'com.graphql-java:graphql-java-extended-validation:20.0'
+	implementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.graphql:spring-graphql-test'
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework:spring-webflux'
-	testImplementation 'org.springframework.graphql:spring-graphql-test'
-	testImplementation "org.mockito:mockito-core:3.+"
-	testImplementation 'org.hamcrest:hamcrest:2.+'
 }
 
 tasks.named('test') {
