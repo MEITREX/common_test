@@ -17,7 +17,6 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-@ActiveProfiles("test")
 @Testcontainers
 public @interface GraphQlApiTest {
 }
