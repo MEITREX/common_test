@@ -2,7 +2,6 @@ package de.unistuttgart.iste.gits.common.testutil;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.lang.annotation.*;
@@ -12,11 +11,12 @@ import java.lang.annotation.*;
  * {@link GraphQlTesterParameterResolver} and {@link ClearDatabase}.
  */
 @ExtendWith(GraphQlTesterParameterResolver.class)
+@ExtendWith(GitsPostgresSqlContainer.class)
+@Testcontainers
 @ExtendWith(ClearDatabase.class)
 @SpringBootTest
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
-@Testcontainers
 public @interface GraphQlApiTest {
 }

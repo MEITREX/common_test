@@ -23,23 +23,36 @@ import java.util.List;
  *     public class MyTest {
  *       // ...
  * </pre>
+ * To specify the tables to delete, annotate the test class with {@link TablesToDelete} <br>
+ * This can also be used to specify the order of deletion. <br>
  * This extension is automatically used by {@link GraphQlApiTest}.
  */
 public class ClearDatabase implements AfterEachCallback, BeforeAllCallback {
 
     private DataSource dataSource;
-    private List<String> tables;
+    private String[] tablesInOrderOfDeletion = null;
 
     @Override
-    public void beforeAll(ExtensionContext context) throws Exception {
-        dataSource = SpringExtension.getApplicationContext(context).getBean("dataSource", DataSource.class);
-        tables = getTableNames(dataSource);
+    public void beforeAll(ExtensionContext context) {
+        context.getTestClass().ifPresent(testClass -> {
+            if (testClass.isAnnotationPresent(TablesToDelete.class)) {
+                this.tablesInOrderOfDeletion = testClass.getAnnotation(TablesToDelete.class).value();
+            }
+        });
+        this.dataSource = SpringExtension.getApplicationContext(context).getBean("dataSource", DataSource.class);
     }
 
     @Override
-    public void afterEach(ExtensionContext context) {
-        var template = new JdbcTemplate(dataSource);
-        JdbcTestUtils.deleteFromTables(template, tables.toArray(new String[0]));
+    public void afterEach(ExtensionContext context) throws SQLException {
+        JdbcTemplate template = new JdbcTemplate(this.dataSource);
+        JdbcTestUtils.deleteFromTables(template, getTablesToDelete());
+    }
+
+    private String[] getTablesToDelete() throws SQLException {
+        if (this.tablesInOrderOfDeletion == null) {
+            this.tablesInOrderOfDeletion = getAllDbTableNames(this.dataSource).toArray(new String[0]);
+        }
+        return this.tablesInOrderOfDeletion;
     }
 
     /**
@@ -48,7 +61,7 @@ public class ClearDatabase implements AfterEachCallback, BeforeAllCallback {
      * @param dataSource the datasource
      * @return a list of table names
      */
-    private List<String> getTableNames(DataSource dataSource) throws SQLException {
+    private List<String> getAllDbTableNames(DataSource dataSource) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             List<String> result = new ArrayList<>();
             ResultSet resultTables = connection.getMetaData().getTables(null, null, "%", new String[]{"TABLE"});
