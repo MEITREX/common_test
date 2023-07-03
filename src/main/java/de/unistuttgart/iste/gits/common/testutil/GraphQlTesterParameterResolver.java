@@ -32,7 +32,8 @@ public class GraphQlTesterParameterResolver implements ParameterResolver {
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return parameterContext.getParameter().getType().equals(GraphQlTester.class);
+        return parameterContext.getParameter().getType().equals(GraphQlTester.class)
+                || parameterContext.getParameter().getType().equals(HttpGraphQlTester.class);
     }
 
     @Override
