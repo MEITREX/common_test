@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 @ExtendWith(GitsPostgresSqlContainer.class)
 @Testcontainers
 @ExtendWith(ClearDatabase.class)
-@SpringBootTest
+@SpringBootTest({"spring.main.allow-bean-definition-overriding=true"})
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
