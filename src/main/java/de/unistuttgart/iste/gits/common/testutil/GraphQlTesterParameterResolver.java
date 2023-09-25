@@ -86,7 +86,7 @@ public class GraphQlTesterParameterResolver implements ParameterResolver {
             final Class<?> fieldType = field.getType();
 
             if (UUID.class.equals(fieldType)) {
-                return HeaderUtils.addCurrentUserHeader(tester, UUID.randomUUID());
+                return HeaderUtils.addCurrentUserHeader(tester, (UUID) field.get(extensionContext.getTestInstance()));
             } else if (LoggedInUser.class.equals(fieldType)) {
                 return HeaderUtils.addCurrentUserHeader(tester, (LoggedInUser) field.get(extensionContext.getTestInstance()));
             } else {
