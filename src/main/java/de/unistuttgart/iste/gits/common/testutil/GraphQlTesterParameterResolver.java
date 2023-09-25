@@ -68,6 +68,7 @@ public class GraphQlTesterParameterResolver implements ParameterResolver {
     }
 
     @SneakyThrows
+    @SuppressWarnings("java:S3011")
     private HttpGraphQlTester injectCurrentUserHeaderIfNecessary(final HttpGraphQlTester tester,
                                                                  final ExtensionContext extensionContext) {
 
@@ -85,10 +86,12 @@ public class GraphQlTesterParameterResolver implements ParameterResolver {
 
             final Class<?> fieldType = field.getType();
 
+            field.setAccessible(true); // make private fields accessible
+
             if (UUID.class.equals(fieldType)) {
-                return HeaderUtils.addCurrentUserHeader(tester, (UUID) field.get(extensionContext.getTestInstance()));
+                return HeaderUtils.addCurrentUserHeader(tester, (UUID) field.get(extensionContext.getTestInstance().orElseThrow()));
             } else if (LoggedInUser.class.equals(fieldType)) {
-                return HeaderUtils.addCurrentUserHeader(tester, (LoggedInUser) field.get(extensionContext.getTestInstance()));
+                return HeaderUtils.addCurrentUserHeader(tester, (LoggedInUser) field.get(extensionContext.getTestInstance().orElseThrow()));
             } else {
                 throw new ParameterResolutionException("Field annotated with InjectCurrentUserHeader must be of type UUID or LoggedInUser");
             }
