@@ -7,13 +7,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.lang.annotation.*;
 
 /**
- * This annotation is a combination of {@link SpringBootTest} and the two test extensions
- * {@link GraphQlTesterParameterResolver} and {@link ClearDatabase}.
+ * This annotation is a combination of {@link SpringBootTest} and the test extensions
+ * {@link GraphQlTesterParameterResolver}, {@link GitsPostgresSqlContainer} and {@link ClearDatabase}.
  */
 @ExtendWith(GraphQlTesterParameterResolver.class)
 @ExtendWith(GitsPostgresSqlContainer.class)
 @Testcontainers
 @ExtendWith(ClearDatabase.class)
+// set allow-bean-definition-overriding to true to allow overriding of spring beans in tests
 @SpringBootTest({"spring.main.allow-bean-definition-overriding=true"})
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
