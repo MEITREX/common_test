@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.gits.common.testutil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.unistuttgart.iste.gits.common.user_handling.LoggedInUser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -47,6 +48,8 @@ public class HeaderUtils {
 
     private static String getJson(final LoggedInUser user) {
         final ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
         try {
             return mapper.writeValueAsString(user);
         } catch (final Exception e) {

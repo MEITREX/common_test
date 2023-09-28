@@ -58,6 +58,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation "org.testcontainers:postgresql:1.18.3"
 	implementation "org.testcontainers:junit-jupiter:1.18.3"
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
 tasks.named('test') {
