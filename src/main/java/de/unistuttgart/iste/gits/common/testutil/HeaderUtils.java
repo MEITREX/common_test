@@ -1,7 +1,6 @@
 package de.unistuttgart.iste.gits.common.testutil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.unistuttgart.iste.gits.common.user_handling.LoggedInUser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,8 +8,6 @@ import org.springframework.graphql.test.tester.HttpGraphQlTester;
 
 import java.util.Collections;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Utility class for adding the current user header to a {@link HttpGraphQlTester}.
@@ -46,15 +43,48 @@ public class HeaderUtils {
         return addCurrentUserHeader(tester, user);
     }
 
+    /**
+     * Converts the given user to a json string.
+     *
+     * @param user the user
+     * @return the json string
+     * @implNote We cannot use the {@link ObjectMapper} here because it cannot correctly convert the OffsetDateTime
+     */
     private static String getJson(final LoggedInUser user) {
-        final ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
 
-        try {
-            return mapper.writeValueAsString(user);
-        } catch (final Exception e) {
-            fail("Could not convert user to json", e);
+        final StringBuilder courseMemberships = new StringBuilder().append("[");
+
+        for (int i = 0; i < user.getCourseMemberships().size(); i++) {
+            final LoggedInUser.CourseMembership courseMembership = user.getCourseMemberships().get(i);
+
+            courseMemberships.append("{")
+                    .append("\"courseId\": \"").append(courseMembership.getCourseId()).append("\",")
+                    .append("\"role\": \"").append(courseMembership.getRole()).append("\",")
+                    .append("\"published\": ").append(courseMembership.isPublished()).append(",")
+                    .append("\"startDate\": \"").append(courseMembership.getStartDate()).append("\",")
+                    .append("\"endDate\": \"").append(courseMembership.getEndDate()).append("\"")
+                    .append("}");
+
+            if (i < user.getCourseMemberships().size() - 1) {
+                courseMemberships.append(",");
+            }
         }
-        return null;
+
+        courseMemberships.append("]");
+
+        return """
+                {
+                  "id": "%s",
+                  "userName": "%s",
+                  "firstName": "%s",
+                  "lastName": "%s",
+                  "courseMemberships": %s
+                }
+                """
+                .formatted(user.getId(),
+                        user.getUserName(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        courseMemberships.toString());
     }
 }
