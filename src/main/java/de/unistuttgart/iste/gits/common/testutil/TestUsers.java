@@ -5,7 +5,9 @@ import de.unistuttgart.iste.gits.common.user_handling.LoggedInUser;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -42,6 +44,24 @@ public class TestUsers {
                 .firstName("firstName")
                 .lastName("lastName")
                 .courseMemberships(List.of(courseMemberships))
+                .realmRoles(Collections.emptySet())
+                .build();
+    }
+
+    /**
+     * Creates a user with a valid membership in a course with the given id.
+     *
+     * @param courseMemberships the memberships of the user
+     * @return a user with a valid membership in a course with the given id
+     */
+    public static LoggedInUser userWithMembershipsAndRealmRole(final LoggedInUser.CourseMembership... courseMemberships) {
+        return LoggedInUser.builder()
+                .userName("userWithMemberships")
+                .id(UUID.randomUUID())
+                .firstName("firstName")
+                .lastName("lastName")
+                .courseMemberships(List.of(courseMemberships))
+                .realmRoles(Set.of(LoggedInUser.RealmRole.COURSE_CREATOR))
                 .build();
     }
 
