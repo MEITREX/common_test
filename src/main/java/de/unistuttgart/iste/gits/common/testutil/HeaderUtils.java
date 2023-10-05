@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.graphql.test.tester.HttpGraphQlTester;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -38,7 +39,14 @@ public class HeaderUtils {
      * @return the tester
      */
     public static HttpGraphQlTester addCurrentUserHeader(final HttpGraphQlTester tester, final UUID userId) {
-        final LoggedInUser user = new LoggedInUser(userId, "test", "testFirstName", "testLastName", Collections.emptyList());
+        final LoggedInUser user = LoggedInUser.builder()
+                .userName("test")
+                .id(userId)
+                .firstName("testFirstName")
+                .lastName("testLastName")
+                .courseMemberships(Collections.emptyList())
+                .realmRoles(Collections.emptySet())
+                .build();
 
         return addCurrentUserHeader(tester, user);
     }
@@ -53,6 +61,7 @@ public class HeaderUtils {
     private static String getJson(final LoggedInUser user) {
 
         final StringBuilder courseMemberships = new StringBuilder().append("[");
+        final StringBuilder realmRoles = new StringBuilder().append("[");
 
         for (int i = 0; i < user.getCourseMemberships().size(); i++) {
             final LoggedInUser.CourseMembership courseMembership = user.getCourseMemberships().get(i);
@@ -72,19 +81,36 @@ public class HeaderUtils {
 
         courseMemberships.append("]");
 
+        List<String> roleStrings = LoggedInUser.RealmRole.getRoleStringsFromEnum(user.getRealmRoles()).stream().toList();
+
+        for (int j = 0; j < roleStrings.size(); j++) {
+
+            realmRoles.append("\"")
+                    .append(roleStrings.get(j))
+                    .append("\"");
+
+            if (j < roleStrings.size() - 1) {
+                courseMemberships.append(",");
+            }
+        }
+
+        realmRoles.append("]");
+
         return """
                 {
                   "id": "%s",
                   "userName": "%s",
                   "firstName": "%s",
                   "lastName": "%s",
-                  "courseMemberships": %s
+                  "courseMemberships": %s,
+                  "realmRoles": %s
                 }
                 """
                 .formatted(user.getId(),
                         user.getUserName(),
                         user.getFirstName(),
                         user.getLastName(),
-                        courseMemberships.toString());
+                        courseMemberships.toString(),
+                        realmRoles.toString());
     }
 }
