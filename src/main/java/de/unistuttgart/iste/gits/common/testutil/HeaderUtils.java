@@ -90,7 +90,7 @@ public class HeaderUtils {
                     .append("\"");
 
             if (j < roleStrings.size() - 1) {
-                courseMemberships.append(",");
+                realmRoles.append(",");
             }
         }
 
