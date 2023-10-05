@@ -1,8 +1,9 @@
 package de.unistuttgart.iste.gits.common.testutil;
 
 import de.unistuttgart.iste.gits.common.dapr.TopicPublisher;
+import de.unistuttgart.iste.gits.common.event.ContentProgressedEvent;
 import de.unistuttgart.iste.gits.common.event.CrudOperation;
-import de.unistuttgart.iste.gits.common.event.UserProgressLogEvent;
+import de.unistuttgart.iste.gits.common.event.UserProgressUpdatedEvent;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -32,8 +33,8 @@ public class MockTestPublisherConfiguration {
         doNothing().when(mockPublisher).notifyCourseChanges(any(UUID.class), any(CrudOperation.class));
         doNothing().when(mockPublisher).notifyChapterChanges(any(), any(CrudOperation.class));
         doNothing().when(mockPublisher).notifyContentChanges(any(), any(CrudOperation.class));
-        doNothing().when(mockPublisher).notifyUserWorkedOnContent(any(UserProgressLogEvent.class));
-        doNothing().when(mockPublisher).notifyUserProgressProcessed(any(UserProgressLogEvent.class));
+        doNothing().when(mockPublisher).notifyUserWorkedOnContent(any(ContentProgressedEvent.class));
+        doNothing().when(mockPublisher).notifyUserProgressUpdated(any(UserProgressUpdatedEvent.class));
         return mockPublisher;
     }
 
