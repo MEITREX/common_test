@@ -1,6 +1,6 @@
-# Test utility for GITS
+# Test utility for MEITREX
 
-This repository contains utility classes for tests in GITS.
+This repository contains utility classes for tests in MEITREX.
 
 ## How to add this repository to your project
 
