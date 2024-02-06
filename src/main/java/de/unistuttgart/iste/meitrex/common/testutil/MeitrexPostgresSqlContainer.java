@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.gits.common.testutil;
+package de.unistuttgart.iste.meitrex.common.testutil;
 
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -8,40 +8,40 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * This class is a singleton that starts a postgresql container for testing.
  * It can be used in two ways:
  * <p>
- * 1. Use the {@link GitsPostgresSqlContainer} as a JUnit 5 extension:
+ * 1. Use the {@link meitrexPostgresSqlContainer} as a JUnit 5 extension:
  * <pre>
- *         &#64;ExtendWith(GitsPostgresSqlContainer.class)
+ *         &#64;ExtendWith(meitrexPostgresSqlContainer.class)
  *         public class MyTest {
  *         // ...
  *         }
  *      </pre>
  * This is the preferred way and is automatically done by the {@link GraphQlApiTest} annotation.
  * <p>
- * 2. Use the {@link GitsPostgresSqlContainer} as a container:
+ * 2. Use the {@link meitrexPostgresSqlContainer} as a container:
  * <pre>
  *         &#64;Testcontainers
  *         public class MyTest {
  *
  *            &#64;Container
- *            private static final GitsPostgresSqlContainer container = GitsPostgresSqlContainer.getInstance();
+ *            private static final meitrexPostgresSqlContainer container = meitrexPostgresSqlContainer.getInstance();
  *            // ...
  *         }
  *      </pre>
  */
-public class GitsPostgresSqlContainer extends PostgreSQLContainer<GitsPostgresSqlContainer>
+public class MeitrexPostgresSqlContainer extends PostgreSQLContainer<MeitrexPostgresSqlContainer>
         implements BeforeAllCallback {
 
     private static final String IMAGE_VERSION = "postgres:latest";
 
-    private static GitsPostgresSqlContainer container;
+    private static MeitrexPostgresSqlContainer container;
 
-    private GitsPostgresSqlContainer() {
+    private MeitrexPostgresSqlContainer() {
         super(IMAGE_VERSION);
     }
 
-    public static GitsPostgresSqlContainer getInstance() {
+    public static MeitrexPostgresSqlContainer getInstance() {
         if (container == null) {
-            container = new GitsPostgresSqlContainer();
+            container = new MeitrexPostgresSqlContainer();
         }
         return container;
     }

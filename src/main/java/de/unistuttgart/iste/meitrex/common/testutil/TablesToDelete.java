@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.gits.common.testutil;
+package de.unistuttgart.iste.meitrex.common.testutil;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -1,14 +1,11 @@
-package de.unistuttgart.iste.gits.common.testutil;
+package de.unistuttgart.iste.meitrex.common.testutil;
 
 
-import de.unistuttgart.iste.gits.common.user_handling.LoggedInUser;
+import de.unistuttgart.iste.meitrex.common.user_handling.LoggedInUser;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Util class containing test users to use in tests.

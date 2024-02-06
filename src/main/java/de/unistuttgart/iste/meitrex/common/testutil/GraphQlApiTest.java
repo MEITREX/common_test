@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.gits.common.testutil;
+package de.unistuttgart.iste.meitrex.common.testutil;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,10 +8,10 @@ import java.lang.annotation.*;
 
 /**
  * This annotation is a combination of {@link SpringBootTest} and the test extensions
- * {@link GraphQlTesterParameterResolver}, {@link GitsPostgresSqlContainer} and {@link ClearDatabase}.
+ * {@link GraphQlTesterParameterResolver}, {@link MeitrexPostgresSqlContainer} and {@link ClearDatabase}.
  */
 @ExtendWith(GraphQlTesterParameterResolver.class)
-@ExtendWith(GitsPostgresSqlContainer.class)
+@ExtendWith(MeitrexPostgresSqlContainer.class)
 @Testcontainers
 @ExtendWith(ClearDatabase.class)
 // set allow-bean-definition-overriding to true to allow overriding of spring beans in tests

@@ -9,7 +9,7 @@ In the `settings.gradle` file, add the following line:
 ```groovy
 sourceControl {
     gitRepository(uri('https://github.com/MEITREX/common_test')) {
-        producesModule('de.unistuttgart.iste.gits:gits-common-test')
+        producesModule('de.unistuttgart.iste.meitrex:meitrex-common-test')
     }
 }
 ```
@@ -17,7 +17,7 @@ sourceControl {
 In the `build.gradle` file, add the following dependency:
 
 ```groovy
-testImplementation('de.unistuttgart.iste.gits:gits-common-test') {
+testImplementation('de.unistuttgart.iste.meitrex:meitrex-common-test') {
     version {
         branch = 'main'
     }
