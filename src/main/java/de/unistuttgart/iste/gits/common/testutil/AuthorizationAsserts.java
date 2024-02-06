@@ -21,8 +21,7 @@ public class AuthorizationAsserts {
      */
     public static void assertIsMissingUserRoleError(final List<ResponseError> graphqlErrors) {
         assertThat(graphqlErrors, hasSize(1));
-        assertThat(graphqlErrors.get(0).getExtensions().get("exception"), is("NoAccessToCourseException"));
-        assertThat(graphqlErrors.get(0).getMessage(), containsString("User does not have the required role to access this data of the course."));
-
+        assertThat(graphqlErrors.getFirst().getExtensions().get("exception"), is("NoAccessToCourseException"));
+        assertThat(graphqlErrors.getFirst().getMessage(), containsString("User does not have the required role to access this data of the course."));
     }
 }
