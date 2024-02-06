@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.gits.common.testutil;
+package de.unistuttgart.iste.meitrex.common.testutil;
 
 import lombok.NoArgsConstructor;
 import org.springframework.graphql.ResponseError;
