@@ -1,14 +1,12 @@
-package de.unistuttgart.iste.gits.common.testutil;
+package de.unistuttgart.iste.meitrex.common.testutil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.unistuttgart.iste.gits.common.user_handling.LoggedInUser;
+import de.unistuttgart.iste.meitrex.common.user_handling.LoggedInUser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.graphql.test.tester.HttpGraphQlTester;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Utility class for adding the current user header to a {@link HttpGraphQlTester}.

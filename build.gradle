@@ -5,7 +5,7 @@ plugins {
 	id "io.github.kobylynskyi.graphql.codegen" version "5.+"
 }
 
-group = 'de.unistuttgart.iste.gits'
+group = 'de.unistuttgart.iste.meitrex'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '21'
 
@@ -14,7 +14,7 @@ graphqlCodegen {
 	// all config options:
 	// https://github.com/kobylynskyi/graphql-java-codegen/blob/main/docs/codegen-options.md
 	outputDir = new File("$buildDir/generated")
-	packageName = "de.unistuttgart.iste.gits.generated.dto"
+	packageName = "de.unistuttgart.iste.meitrex.generated.dto"
 	generatedAnnotation = "jakarta.annotation.Generated"
 	modelValidationAnnotation = "jakarta.validation.constraints.NotNull"
 	generateApis = false // set to false as the generator does not support spring boot graphQL
@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'de.unistuttgart.iste.gits:gits-common:1.0.0'
+	implementation 'de.unistuttgart.iste.meitrex:meitrex-common:1.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
 	implementation 'org.springframework.boot:spring-boot-starter-test'
