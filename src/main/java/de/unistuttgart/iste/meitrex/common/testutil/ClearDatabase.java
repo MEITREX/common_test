@@ -7,8 +7,7 @@ import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * JUnit test extension that clears the database after each test.
@@ -26,13 +25,13 @@ import java.util.List;
 public class ClearDatabase implements AfterEachCallback, BeforeAllCallback {
 
     private DataSource dataSource;
-    private String[] tablesInOrderOfDeletion = null;
+    private List<String> tablesInOrderOfDeletion = null;
 
     @Override
     public void beforeAll(ExtensionContext context) {
         context.getTestClass().ifPresent(testClass -> {
             if (testClass.isAnnotationPresent(TablesToDelete.class)) {
-                this.tablesInOrderOfDeletion = testClass.getAnnotation(TablesToDelete.class).value();
+                this.tablesInOrderOfDeletion = Arrays.asList(testClass.getAnnotation(TablesToDelete.class).value());
             }
         });
         this.dataSource = SpringExtension.getApplicationContext(context).getBean("dataSource", DataSource.class);
@@ -40,13 +39,43 @@ public class ClearDatabase implements AfterEachCallback, BeforeAllCallback {
 
     @Override
     public void afterEach(ExtensionContext context) throws SQLException {
-        JdbcTemplate template = new JdbcTemplate(this.dataSource);
-        JdbcTestUtils.deleteFromTables(template, getTablesToDelete());
+        deleteTables();
     }
 
-    private String[] getTablesToDelete() throws SQLException {
+    private void deleteTables() throws SQLException {
+        List<String> notDeletedTables = getTablesToDelete();
+
+        while (!notDeletedTables.isEmpty()) {
+            List<String> tablesToDelete = new ArrayList<>(notDeletedTables);
+
+            RuntimeException lastException = new RuntimeException("Could not delete tables");
+
+            for (String table : notDeletedTables) {
+                try {
+                    deleteSingleTable(table);
+                    tablesToDelete.remove(table);
+                } catch (RuntimeException e) {
+                    lastException = e;
+                }
+            }
+
+            if (tablesToDelete.size() == notDeletedTables.size()) {
+                // no tables were deleted
+                throw lastException;
+            }
+
+            notDeletedTables = tablesToDelete;
+        }
+    }
+
+    private void deleteSingleTable(String table) {
+        JdbcTemplate template = new JdbcTemplate(this.dataSource);
+        JdbcTestUtils.deleteFromTables(template, table);
+    }
+
+    private List<String> getTablesToDelete() throws SQLException {
         if (this.tablesInOrderOfDeletion == null) {
-            this.tablesInOrderOfDeletion = getAllDbTableNames(this.dataSource).toArray(new String[0]);
+            this.tablesInOrderOfDeletion = getAllDbTableNames(this.dataSource);
         }
         return this.tablesInOrderOfDeletion;
     }
