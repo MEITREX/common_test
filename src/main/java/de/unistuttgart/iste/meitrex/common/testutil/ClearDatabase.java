@@ -1,13 +1,19 @@
 package de.unistuttgart.iste.meitrex.common.testutil;
 
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import javax.sql.DataSource;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * JUnit test extension that clears the database after each test.
@@ -43,6 +49,7 @@ public class ClearDatabase implements AfterEachCallback, BeforeAllCallback {
     }
 
     private void deleteTables() throws SQLException {
+        JdbcTemplate template = new JdbcTemplate(this.dataSource);
         List<String> notDeletedTables = getTablesToDelete();
 
         while (!notDeletedTables.isEmpty()) {
@@ -52,7 +59,7 @@ public class ClearDatabase implements AfterEachCallback, BeforeAllCallback {
 
             for (String table : notDeletedTables) {
                 try {
-                    deleteSingleTable(table);
+                    JdbcTestUtils.deleteFromTables(template, table);
                     tablesToDelete.remove(table);
                 } catch (RuntimeException e) {
                     lastException = e;
@@ -66,11 +73,6 @@ public class ClearDatabase implements AfterEachCallback, BeforeAllCallback {
 
             notDeletedTables = tablesToDelete;
         }
-    }
-
-    private void deleteSingleTable(String table) {
-        JdbcTemplate template = new JdbcTemplate(this.dataSource);
-        JdbcTestUtils.deleteFromTables(template, table);
     }
 
     private List<String> getTablesToDelete() throws SQLException {
