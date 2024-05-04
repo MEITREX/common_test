@@ -5,8 +5,11 @@ import de.unistuttgart.iste.meitrex.common.user_handling.LoggedInUser;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.graphql.test.tester.HttpGraphQlTester;
+import org.springframework.graphql.test.tester.WebGraphQlTester;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Utility class for adding the current user header to a {@link HttpGraphQlTester}.
@@ -21,7 +24,7 @@ public class HeaderUtils {
      * @param user   the user
      * @return the tester
      */
-    public static HttpGraphQlTester addCurrentUserHeader(final HttpGraphQlTester tester, final LoggedInUser user) {
+    public static WebGraphQlTester addCurrentUserHeader(final WebGraphQlTester tester, final LoggedInUser user) {
         return tester.mutate()
                 .header("CurrentUser", getJson(user))
                 .build();
@@ -36,7 +39,7 @@ public class HeaderUtils {
      * @param userId the user id to use
      * @return the tester
      */
-    public static HttpGraphQlTester addCurrentUserHeader(final HttpGraphQlTester tester, final UUID userId) {
+    public static WebGraphQlTester addCurrentUserHeader(final WebGraphQlTester tester, final UUID userId) {
         final LoggedInUser user = LoggedInUser.builder()
                 .userName("test")
                 .id(userId)

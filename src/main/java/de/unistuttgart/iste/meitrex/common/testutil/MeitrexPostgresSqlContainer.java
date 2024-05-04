@@ -8,7 +8,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * This class is a singleton that starts a postgresql container for testing.
  * It can be used in two ways:
  * <p>
- * 1. Use the {@link meitrexPostgresSqlContainer} as a JUnit 5 extension:
+ * 1. Use the {@link MeitrexPostgresSqlContainer} as a JUnit 5 extension:
  * <pre>
  *         &#64;ExtendWith(meitrexPostgresSqlContainer.class)
  *         public class MyTest {
@@ -17,7 +17,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
  *      </pre>
  * This is the preferred way and is automatically done by the {@link GraphQlApiTest} annotation.
  * <p>
- * 2. Use the {@link meitrexPostgresSqlContainer} as a container:
+ * 2. Use the {@link MeitrexPostgresSqlContainer} as a container:
  * <pre>
  *         &#64;Testcontainers
  *         public class MyTest {
