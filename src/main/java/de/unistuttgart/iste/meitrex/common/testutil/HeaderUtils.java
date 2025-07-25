@@ -45,6 +45,7 @@ public class HeaderUtils {
                 .id(userId)
                 .firstName("testFirstName")
                 .lastName("testLastName")
+                .nickname("testNickname")
                 .courseMemberships(Collections.emptyList())
                 .realmRoles(Collections.emptySet())
                 .build();
@@ -103,6 +104,7 @@ public class HeaderUtils {
                   "userName": "%s",
                   "firstName": "%s",
                   "lastName": "%s",
+                  "nickname": "%s",
                   "courseMemberships": %s,
                   "realmRoles": %s
                 }
@@ -111,6 +113,7 @@ public class HeaderUtils {
                         user.getUserName(),
                         user.getFirstName(),
                         user.getLastName(),
+                        user.getNickname(),
                         courseMemberships.toString(),
                         realmRoles.toString());
     }
