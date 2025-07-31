@@ -40,6 +40,7 @@ public class TestUsers {
                 .id(UUID.randomUUID())
                 .firstName("firstName")
                 .lastName("lastName")
+                .nickname("nickname")
                 .courseMemberships(List.of(courseMemberships))
                 .realmRoles(Collections.emptySet())
                 .build();
@@ -58,6 +59,7 @@ public class TestUsers {
                 .id(UUID.randomUUID())
                 .firstName("firstName")
                 .lastName("lastName")
+                .nickname("testNickname")
                 .courseMemberships(List.of(courseMemberships))
                 .realmRoles(realmRoles)
                 .build();
